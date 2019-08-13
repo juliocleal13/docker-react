@@ -7,3 +7,16 @@ before_install:
 
 script:
   - docker run -e CI=true juliocleal14/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk #quando for elasticbeanstalk esse e nome a se colocar
+  region: "us-east-2" #regiao onde a aplicacao foi instalada
+  app: "docker" #nome da aplicacao no elasticbeanstalk
+  env: "Docker-env" #nome do env da aplicacao no elasticbeanstalk
+  bucket_name: "elasticbeanstalk-us-east-2-674144395469" #nome do bucket s3
+  bucket_path: "docker" #mesmo nome da aplicacao, essa pasta seria criada automaticamente
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY #tenho que ir em iam no aws console, criar um usuario com permissao full 
+  secret_access_key:             # no elasticbeanstalk, ir no travis-ci.org, more options, enviorment, criar
+    secure: "$AWS_SECRET_KEY"      # as variaveis com as chaves geradas na criacao do usuario no iam
